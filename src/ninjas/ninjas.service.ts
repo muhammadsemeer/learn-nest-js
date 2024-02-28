@@ -28,7 +28,7 @@ export class NinjasService {
     {
       id: 5,
       name: 'Ninja 5',
-      clan: 'Clan 3',
+      clan: 'Clan 2',
     },
   ];
 
@@ -40,8 +40,13 @@ export class NinjasService {
     return this.ninjas;
   }
 
-  getNinja(id: string) {
-    return this.ninjas.find((ninja) => ninja.id === +id);
+  getNinja(id: number) {
+    const ninja = this.ninjas.find((ninja) => ninja.id === id);
+    if (!ninja) {
+      throw new Error('Ninja not found');
+    }
+
+    return ninja;
   }
 
   createNinja(ninja: CreateNinjaDto) {
@@ -50,9 +55,9 @@ export class NinjasService {
     return newNinja;
   }
 
-  updateNinja(id: string, ninja: UpdateNinjaDto) {
+  updateNinja(id: number, ninja: UpdateNinjaDto) {
     this.ninjas = this.ninjas.map((n) => {
-      if (n.id === +id) {
+      if (n.id === id) {
         return { ...n, ...ninja };
       }
       return n;
