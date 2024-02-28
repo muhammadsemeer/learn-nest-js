@@ -9,44 +9,35 @@ import {
   Query,
 } from '@nestjs/common';
 import { CreateNinjaDto } from './dto/createNinjaDto';
+import { NinjasService } from './ninjas.service';
+import { UpdateNinjaDto } from './dto/updateNinjaDto';
 
 @Controller('ninjas')
 export class NinjasController {
+  constructor(private readonly ninjasService: NinjasService) {}
+
   @Get()
-  getNinjas(@Query('name') name: string) {
-    return [
-      {
-        name,
-      },
-    ];
+  getNinjas(@Query('clan') clan: string) {
+    return this.ninjasService.getNinjas(clan);
   }
 
   @Get(':id')
   getNinja(@Param('id') id: string) {
-    return {
-      id,
-      name: 'Ninja 1',
-    };
+    return this.ninjasService.getNinja(id);
   }
 
   @Post()
   createNinja(@Body() createNinjaDto: CreateNinjaDto) {
-    return createNinjaDto;
+    return this.ninjasService.createNinja(createNinjaDto);
   }
 
   @Put(':id')
-  updateNinja(@Param('id') id: string, @Body() createNinjaDto: CreateNinjaDto) {
-    return {
-      id,
-      ...createNinjaDto,
-    };
+  updateNinja(@Param('id') id: string, @Body() updateNinjaDto: UpdateNinjaDto) {
+    return this.ninjasService.updateNinja(id, updateNinjaDto);
   }
 
   @Delete(':id')
   deleteNinja(@Param('id') id: string) {
-    return {
-      id,
-      message: 'Ninja deleted',
-    };
+    return this.ninjasService.deleteNinja(id);
   }
 }
